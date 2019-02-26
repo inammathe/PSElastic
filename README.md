@@ -2,8 +2,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/q8xh0pndvsba0kpd?svg=true)](https://ci.appveyor.com/project/inammathe/pselastic/branch/master)
 
 This is a PowerShell module that exports a bunch of handy functions which can be used to manage various aspects of Elastic.
-At the moment these functions are mostly just wrappers for the Elastic rest API but could easily be expanded to include agent or controller server management.
-PRs or feature requests are most welcome :)
+At the moment these functions are mostly just wrappers for the Elastic rest API.
 
 Installation
 ======
