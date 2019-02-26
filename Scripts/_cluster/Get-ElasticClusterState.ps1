@@ -1,3 +1,15 @@
+<#
+.SYNOPSIS
+    The cluster state API allows to get a comprehensive state information of the whole cluster.
+.DESCRIPTION
+    The response provides the cluster name, the total compressed size of the cluster state (its size when serialized for transmission over the network),
+    and the cluster state itself, which can be filtered to only retrieve the parts of interest
+.EXAMPLE
+    PS C:\> Get-ElasticClusterState
+    Returns a comprehensive state information of the whole cluster
+.LINK
+    https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-state.html
+#>
 function Get-ElasticClusterState
 {
     [CmdletBinding()]
