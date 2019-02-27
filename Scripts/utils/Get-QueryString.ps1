@@ -1,8 +1,8 @@
 function Get-QueryString {
     param (
-        $QueryVariables
+        [PSCustomObject]$QueryVariables
     )
-    $variables = foreach ($variable in $QueryVariables) {
+    $variables = foreach ($variable in $QueryVariables.PSObject.Properties) {
         "$($variable.Name.ToLower())=$($variable.Value)"
     }
     if ($variables) {
