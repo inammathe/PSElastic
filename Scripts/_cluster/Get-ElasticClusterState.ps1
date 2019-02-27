@@ -51,9 +51,9 @@ function Get-ElasticClusterState
         Write-ElasticLog "$($MyInvocation.MyCommand)"
         $resource = '_cluster/state'
 
-        $metrics = Get-ParamSetVariables -Parameters $MyInvocation.MyCommand.Parameters -Set 'Metrics' | Select-Object -ExpandProperty Name
-        if ($metrics) {
-            $resource += ('/' + (Join-Parts -Separator ',' -Parts $metrics))
+        $metrics = Get-ParamSetVariables -Parameters $MyInvocation.MyCommand.Parameters -Set 'Metrics'
+        if ($metrics  | Get-Member -MemberType NoteProperty) {
+            $resource += ('/' + (Join-Parts -Separator ',' -Parts ($metrics  | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty 'Name')))
         }
         if ($Indice) {
             $resource += ('/' + (Join-Parts -Separator ',' -Parts $Indice))

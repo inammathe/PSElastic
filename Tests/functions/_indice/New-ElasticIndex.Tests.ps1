@@ -27,7 +27,7 @@ InModuleScope $ElasticModule {
             }
 
             # Act
-            $result = New-ElasticIndex
+            $result = New-ElasticIndex -Name 'mock'
 
             # Assert
             It "Verifiable mocks are called" {
