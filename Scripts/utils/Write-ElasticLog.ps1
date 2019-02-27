@@ -52,16 +52,17 @@ function Write-ElasticLog
         # Write message to error, warning, or verbose pipeline and specify $LevelText
         switch ($Level) {
             'Error' {
-                Write-Error $Message
                 $LevelText = 'ERROR:'
+                "$FormattedDate $LevelText $Message" | Out-File -FilePath $Path -Append
+                Write-Error $Message
                 }
             'Warn' {
-                Write-Warning $Message
                 $LevelText = 'WARNING:'
+                Write-Warning $Message
                 }
             'Info' {
-                Write-Verbose $Message
                 $LevelText = 'INFO:'
+                Write-Verbose $Message
                 }
             }
 
