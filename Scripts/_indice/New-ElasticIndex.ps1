@@ -14,13 +14,33 @@ function New-ElasticIndex
     [CmdletBinding()]
     param
     (
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
+        [ValidateScript({
+            if($_ -cnotmatch '^[^A-Z]*$'){
+                Write-ElasticLog -Level 'Error' -Message "'$_' Must be Lowercase" -ErrorAction Stop
+            }elseif($_ -match '[\/*?"<>| ,#:]+') {
+                Write-ElasticLog -Level 'Error' -Message "'$_' Cannot include any of these characters \, /, *, ?, `", <, >, |, ` ` (space character), ,, #,:" -ErrorAction Stop
+            }elseif($_ -match '^[-_+].*$'){
+                Write-ElasticLog -Level 'Error' -Message "'$_' Cannot start with -, _, +" -ErrorAction Stop
+            }elseif($_ -match '^\.$|^\.\.$'){
+                Write-ElasticLog -Level 'Error' -Message "'$_' Cannot be . or .." -ErrorAction Stop
+            }elseif([System.Text.Encoding]::ASCII.GetByteCount($_) -gt 255){
+                Write-ElasticLog -Level 'Error' -Message "'$_' Cannot be longer than 255 bytes" -ErrorAction Stop
+            }else {
+                $true
+            }
+        })]
         [string[]]
         $Name,
 
         [Parameter(Mandatory=$false, ParameterSetName="Settings")]
-        [switch]
-        $version,
+        [int]
+        $number_of_shards,
+
+        [Parameter(Mandatory=$false, ParameterSetName="Settings")]
+        [int]
+        $number_of_replicas,
 
         [Parameter(Mandatory=$false)]
         $ElasticConnection = (Get-ElasticConnection)
@@ -29,13 +49,15 @@ function New-ElasticIndex
     {
         Write-ElasticLog "$($MyInvocation.MyCommand)"
 
-        if(Get-ParamSetVariables -Parameters $MyInvocation.MyCommand.Parameters -Set 'Settings' -OutVariable settings)
-        {
-            $settings | ConvertTo-JSON -OutVariable settings
+        $settings = Get-ParamSetVariables -Parameters $MyInvocation.MyCommand.Parameters -Set 'Settings'
+        if ($settings | Get-Member -MemberType NoteProperty) {
+            $settings = $settings | ConvertTo-JSON
         }
     }
     Process
     {
-        Invoke-ElasticRequest -ElasticConnection $ElasticConnection -Resource $Name -Method 'PUT' -Content $settings
+        foreach ($indexName in $Name) {
+            Invoke-ElasticRequest -ElasticConnection $ElasticConnection -Resource $indexName -Method 'PUT' -Content $settings
+        }
     }
-}
+} 
