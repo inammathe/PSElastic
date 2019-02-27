@@ -29,7 +29,7 @@ function Invoke-ElasticRequest {
         else
         {
             Write-ElasticLog "$Method $uri `n$($Content | Format-List | Out-String)"
-            Invoke-RestMethod -Method $Method -Uri $uri -Headers $ElasticConnection.header -Body $Content
+            Invoke-RestMethod -Method $Method -Uri $uri -Headers $ElasticConnection.header -Body $Content -ContentType 'application/json'
         }
     }
 }

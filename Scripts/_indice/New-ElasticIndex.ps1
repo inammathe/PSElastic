@@ -60,4 +60,4 @@ function New-ElasticIndex
             Invoke-ElasticRequest -ElasticConnection $ElasticConnection -Resource $indexName -Method 'PUT' -Content $settings
         }
     }
-} 
+}
