@@ -30,7 +30,21 @@ function Confirm-ElasticIndexExists
     Process
     {
         foreach ($connection in $ElasticConnection) {
-            Invoke-ElasticRequest -ElasticConnection $connection -Resource $Name -Method 'HEAD'
+            try {
+                Invoke-ElasticRequest -ElasticConnection $connection -Resource $Name -Method 'HEAD' -ErrorAction Stop | Out-Null
+                $true
+            }
+            catch [System.Net.WebException] {
+                if ([int]$_.Exception.Response.StatusCode -eq 404) {
+                    $false
+                } else {
+                    throw $_
+                }
+            }
+            catch
+            {
+                throw $_
+            }
         }
     }
 }

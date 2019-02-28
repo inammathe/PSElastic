@@ -21,24 +21,23 @@ InModuleScope $ElasticModule {
                 return New-Object psobject -Property $properties
             }
 
-            #$mockData = Import-CliXML -Path "$ElasticMockDataLocation\Confirm-ElasticIndexExists.Mock"
             Mock Invoke-ElasticRequest -Verifiable -MockWith {
-                return $mockData
-            }
+                return $null
+            } -ParameterFilter {$Resource -eq 'mockPass'}
 
             # Act
-            $result = Confirm-ElasticIndexExists -Name 'mock'
+            $result_success = Confirm-ElasticIndexExists -Name 'mockPass'
 
             # Assert
-            #It "Verifiable mocks are called" {
-            #    Assert-VerifiableMock
-            #}
-            #It "Returns a value" {
-            #    $result | Should -not -BeNullOrEmpty
-            #}
-            #It "Returns the expected type" {
-            #    $result -is [object] | Should -Be $true
-            #}
+            It "Verifiable mocks are called" {
+                Assert-VerifiableMock
+            }
+            It "Returns a value" {
+                $result_success | Should -not -BeNullOrEmpty
+            }
+            It "Returns the expected value" {
+                $result_success | Should -Be $true
+            }
             It "Calls Write-ElasticLog and is only invoked once" {
                 Assert-MockCalled -CommandName Write-ElasticLog -Times 1 -Exactly
             }
