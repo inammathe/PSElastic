@@ -25,7 +25,7 @@ function Remove-ElasticIndex
     Begin
     {
         Write-ElasticLog "$($MyInvocation.MyCommand)"
-        [string]$Name = ('/' + (Join-Parts -Separator ',' -Parts $Name))
+        [string]$Name = Join-Parts -Separator ',' -Parts $Name
     }
     Process
     {
@@ -34,3 +34,5 @@ function Remove-ElasticIndex
         }
     }
 }
+
+Remove-ElasticIndex 'wad' -ElasticConnection @()

@@ -49,7 +49,7 @@ function New-ElasticIndex
     {
         Write-ElasticLog "$($MyInvocation.MyCommand)"
 
-        [string]$Name = (Join-Parts -Separator ',' -Parts $Name)
+        [string]$Name = Join-Parts -Separator ',' -Parts $Name
         if (Get-ParamSetVariables -Parameters $MyInvocation.MyCommand.Parameters -Set 'Settings' -OutVariable settings) {
             $settings = $settings | ConvertTo-JSON
         }

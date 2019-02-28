@@ -3,7 +3,7 @@ try
 {
     $currentLocation = Split-Path -parent $MyInvocation.MyCommand.Path
     if (!(Get-Module Pester)) {
-        #Install-Module -Name Pester -Force
+        Install-Module -Name Pester -Force
         Import-Module -Name Pester
     }
 
