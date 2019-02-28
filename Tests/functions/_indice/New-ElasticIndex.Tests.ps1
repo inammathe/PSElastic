@@ -39,6 +39,27 @@ InModuleScope $ElasticModule {
             It "Returns the expected type" {
                 $result -is [object] | Should -Be $true
             }
+            It "Correctly Validates the index name" {
+                # Must be Lowercase
+                { New-ElasticIndex -Name 'Mock' } | Should -Throw
+
+                # Must not contain illegal characters
+                foreach ($illegalCharacterName in @('\', '/', '*', '?', '"', '<', '>', '|', ' ', ',', '#', ':')) {
+                    { New-ElasticIndex -Name $illegalCharacterName } | Should -Throw
+                }
+
+                # Must not start with illegal characters
+                foreach ($illegalCharacterName in @('-mock', '_mock', '+mock')) {
+                    { New-ElasticIndex -Name $illegalCharacterName } | Should -Throw
+                }
+
+                # Cannot be . or ..
+                { New-ElasticIndex -Name '.' } | Should -Throw
+                { New-ElasticIndex -Name '..' } | Should -Throw
+
+                # Cannot be longer than 255 bytes
+                { New-ElasticIndex -Name ('m'*256) } | Should -Throw
+            }
             It "Calls Write-ElasticLog and is only invoked once" {
                 Assert-MockCalled -CommandName Write-ElasticLog -Times 1 -Exactly
             }

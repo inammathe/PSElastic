@@ -19,7 +19,7 @@ function New-ElasticIndex
         [ValidateScript({
             if($_ -cnotmatch '^[^A-Z]*$'){
                 Write-ElasticLog -Level 'Error' -Message "'$_' Must be Lowercase" -ErrorAction Stop
-            }elseif($_ -match '[\/*?"<>| ,#:]+') {
+            }elseif($_ -match '[\\/*?"<>| ,#:]+') {
                 Write-ElasticLog -Level 'Error' -Message "'$_' Cannot include any of these characters \, /, *, ?, `", <, >, |, ` ` (space character), ,, #,:" -ErrorAction Stop
             }elseif($_ -match '^[-_+].*$'){
                 Write-ElasticLog -Level 'Error' -Message "'$_' Cannot start with -, _, +" -ErrorAction Stop
