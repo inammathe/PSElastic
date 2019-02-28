@@ -11,7 +11,7 @@ function Invoke-ElasticRequest {
         [Object[]]$QueryVariables,
 
         [Parameter(Mandatory=$false)]
-        [ValidateSet('GET','POST','PUT')]
+        [ValidateSet('GET','POST','PUT', 'DELETE')]
         [string]$Method = 'GET',
 
         [Parameter(Mandatory=$false)]
