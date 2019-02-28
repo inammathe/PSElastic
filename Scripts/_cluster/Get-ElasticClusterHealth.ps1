@@ -29,7 +29,7 @@ function Get-ElasticClusterHealth
         [string]
         $Timeout,
 
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory=$false, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         $ElasticConnection = (Get-ElasticConnection)
     )
     Begin
@@ -43,6 +43,8 @@ function Get-ElasticClusterHealth
     }
     Process
     {
-        Invoke-ElasticRequest -ElasticConnection $elasticConnection -Resource $resource -QueryVariables $queryVariables
+        foreach ($connection in $ElasticConnection) {
+            Invoke-ElasticRequest -ElasticConnection $connection -Resource $resource -QueryVariables $queryVariables
+        }
     }
 }

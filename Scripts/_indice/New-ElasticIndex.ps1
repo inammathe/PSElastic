@@ -7,7 +7,7 @@
     PS C:\> New-ElasticIndex
     Returns a comprehensive state information of the whole cluster
 .LINK
-    https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-state.html
+    https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html
 #>
 function New-ElasticIndex
 {
@@ -42,21 +42,22 @@ function New-ElasticIndex
         [int]
         $number_of_replicas,
 
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory=$false, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         $ElasticConnection = (Get-ElasticConnection)
     )
     Begin
     {
         Write-ElasticLog "$($MyInvocation.MyCommand)"
 
+        [string]$Name = (Join-Parts -Separator ',' -Parts $Name)
         if (Get-ParamSetVariables -Parameters $MyInvocation.MyCommand.Parameters -Set 'Settings' -OutVariable settings) {
             $settings = $settings | ConvertTo-JSON
         }
     }
     Process
     {
-        foreach ($indexName in $Name) {
-            Invoke-ElasticRequest -ElasticConnection $ElasticConnection -Resource $indexName -Method 'PUT' -Content $settings
+        foreach ($connection in $ElasticConnection) {
+            Invoke-ElasticRequest -ElasticConnection $connection -Resource $Name -Method 'PUT' -Content $settings
         }
     }
 }

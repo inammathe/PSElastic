@@ -4,20 +4,20 @@
 .DESCRIPTION
     The get index API allows to retrieve information about one or more indexes. All documents in Elasticsearch are stored inside of one index or another.
 .EXAMPLE
-    PS C:\> Get-ElasticIndex
+    PS C:\> Confirm-ElasticIndexExists
     Returns an index
 .LINK
-    https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-index.html
+    https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-state.html
 #>
-function Get-ElasticIndex
+function Confirm-ElasticIndexExists
 {
     [CmdletBinding()]
     param
     (
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string[]]
-        $Name = '_all',
+        $Name,
 
         [Parameter(Mandatory=$false, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         $ElasticConnection = (Get-ElasticConnection)
@@ -30,7 +30,7 @@ function Get-ElasticIndex
     Process
     {
         foreach ($connection in $ElasticConnection) {
-            Invoke-ElasticRequest -ElasticConnection $connection -Resource $Name -Method 'GET'
+            Invoke-ElasticRequest -ElasticConnection $connection -Resource $Name -Method 'HEAD'
         }
     }
 }

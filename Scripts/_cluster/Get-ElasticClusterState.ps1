@@ -43,7 +43,7 @@ function Get-ElasticClusterState
         [switch]
         $blocks,
 
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory=$false, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         $ElasticConnection = (Get-ElasticConnection)
     )
     Begin
@@ -60,6 +60,8 @@ function Get-ElasticClusterState
     }
     Process
     {
-        Invoke-ElasticRequest -ElasticConnection $ElasticConnection -Resource $resource
+        foreach ($connection in $ElasticConnection) {
+            Invoke-ElasticRequest -ElasticConnection $connection -Resource $resource
+        }
     }
 }

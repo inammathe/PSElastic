@@ -1,35 +1,36 @@
 <#
 .SYNOPSIS
-    The get index API allows to retrieve information about one or more indexes.
+    This indice API allows you to remove one or more indices.
 .DESCRIPTION
-    The get index API allows to retrieve information about one or more indexes. All documents in Elasticsearch are stored inside of one index or another.
+    This indice API allows you to remove one or more indices. All documents in Elasticsearch are stored inside of one index or another.
 .EXAMPLE
-    PS C:\> Remove-ElasticIndex
-    Returns an index
+    PS C:\> Remove-ElasticIndex -Name 'myindex'
+    Removes the index 'myindex'
 .LINK
-    https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-state.html
+    https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-delete-index.html
 #>
 function Remove-ElasticIndex
 {
     [CmdletBinding()]
     param
     (
-        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string[]]
         $Name,
 
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory=$false, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         $ElasticConnection = (Get-ElasticConnection)
     )
     Begin
     {
         Write-ElasticLog "$($MyInvocation.MyCommand)"
+        [string]$Name = ('/' + (Join-Parts -Separator ',' -Parts $Name))
     }
     Process
     {
-        foreach ($indexName in $Name) {
-            Invoke-ElasticRequest -ElasticConnection $ElasticConnection -Resource $indexName -Method 'DELETE'
+        foreach ($connection in $ElasticConnection) {
+            Invoke-ElasticRequest -ElasticConnection $connection -Resource $Name -Method 'DELETE'
         }
     }
 }
