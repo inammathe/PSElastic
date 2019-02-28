@@ -1,16 +1,12 @@
 <#
 .Synopsis
-   Sets the current Elastic connection info (BaseUrl and API Authorization).
-
-   Highly recommended to call this function from $profile to avoid having to re-configure this on every session.
+    Sets the current Elastic connection info (BaseUrl and API Authorization).
 .DESCRIPTION
-   Sets the current Elastic connection info (BaseUrl and API Authorization). Stores information as $env variables
-
-   It is highly recommended that you call this function from $profile to avoid having to re-configure this on every session.
+    Sets the current Elastic connection info (BaseUrl and API Authorization). Stores information as $env variables
 .EXAMPLE
-   Set-ElasticConnectionInfo -BaseUrl "http://MyElastic.AwesomeCompany.com" -Username 'user' -Password 'pass'
+    Set-ElasticConnectionInfo -BaseUrl "http://MyElastic.AwesomeCompany.com" -Username 'user' -Password 'pass'
 
-   Set connection info with a specific Auth string for an Elastic instance
+    Sets environment variables for use in this module to make requests to your Elastic cluster.
 #>
 function Set-ElasticConnection
 {

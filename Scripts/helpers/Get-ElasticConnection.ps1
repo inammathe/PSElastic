@@ -2,21 +2,16 @@
 
 <#
 .Synopsis
-   Creates an endpoint to connect to Elastic
+    Creates an object containing properties used when making requests to the Elastic API
 .DESCRIPTION
-   Creates an endpoint to connect to Elastic
+    Creates an object containing properties used when making requests to the Elastic API.
+    This command deponds on both $env:ElasticBaseUrl and $env:ElasticAuth. If either is null or empty, this function will fail.
+    Please use Set-ElasticConnection or assign directly prior to this set these variables
 .EXAMPLE
-   $c = Get-ElasticConnection ; $c.repository.environments.findall()
+    Set-ElasticConnection -BaseUrl "https://MyElastic.com:9200" -Username 'user' -Password 'pass'
+    Get-ElasticConnection
 
-   Get all the environments on the Elastic  instance using New-Elastic Connection and the Elastic .client
-.EXAMPLE
-   $c = Get-ElasticConnection ; invoke-webrequest -header $c.header -uri http://Elastic.company.com/api/environments/all -method Get
-
-   Use the [Header] Member of the Object returned by New-Elastic Connection as a header to call the REST API using Invoke-WebRequest
-.LINK
-   Github project: https://github.com/Dalmirog/Octoposh
-   Wiki: https://github.com/Dalmirog/OctoPosh/wiki
-   QA and Cmdlet request: https://gitter.im/Dalmirog/OctoPosh#initial
+    Returns the BaseUrl and Header properties required for Elastic API requests. These properties are set via the Set-ElasticConnection function.
 #>
 function Get-ElasticConnection
 {
