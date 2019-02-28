@@ -49,8 +49,7 @@ function New-ElasticIndex
     {
         Write-ElasticLog "$($MyInvocation.MyCommand)"
 
-        $settings = Get-ParamSetVariables -Parameters $MyInvocation.MyCommand.Parameters -Set 'Settings'
-        if ($settings | Get-Member -MemberType NoteProperty) {
+        if (Get-ParamSetVariables -Parameters $MyInvocation.MyCommand.Parameters -Set 'Settings' -OutVariable settings) {
             $settings = $settings | ConvertTo-JSON
         }
     }

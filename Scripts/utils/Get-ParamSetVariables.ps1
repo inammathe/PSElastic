@@ -14,5 +14,7 @@ function Get-ParamSetVariables {
             $output | Add-Member -Name $variable.Name -Type NoteProperty -Value $variable.Value
         }
     }
-    Write-Output $output
+    if ($output | Get-Member -MemberType NoteProperty) {
+        Write-Output $output
+    }
 }
