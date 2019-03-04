@@ -17,7 +17,7 @@ InModuleScope $ElasticModule {
                     $param1,
 
                     [Parameter(Mandatory=$false, ParameterSetName="Params")]
-                    [int]
+                    [System.Nullable``1[[System.Int32]]]
                     $param2,
 
                     [Parameter(Mandatory=$false, ParameterSetName="Params")]

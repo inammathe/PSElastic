@@ -10,7 +10,7 @@ function Get-ParamSetVariables {
     } |
     ForEach-Object {
         $variable = Get-Variable ($_.Value).Name -ErrorAction SilentlyContinue
-        if ($variable.Value) {
+        if ($variable.Value -or $variable.Value -eq 0) {
             $output | Add-Member -Name $variable.Name -Type NoteProperty -Value $variable.Value
         }
     }

@@ -7,7 +7,7 @@ Get-Module $ElasticModule | Remove-Module
 Import-Module "$ElasticModuleLocation\$ElasticModule.psd1"
 
 InModuleScope $ElasticModule {
-    Describe "FunctionName Unit Tests" -Tag 'Unit' {
+    Describe "Write-ElasticDocument Unit Tests" -Tag 'Unit' {
         Context "$ElasticFunction return value validation" {
             # Prepare
             Mock Write-ElasticLog -Verifiable -MockWith {} -ParameterFilter {$message -eq $ElasticFunction}
@@ -21,13 +21,18 @@ InModuleScope $ElasticModule {
                 return New-Object psobject -Property $properties
             }
 
-            $mockData = Import-CliXML -Path "$ElasticMockDataLocation\Get-ElasticIndex.Mock"
+            $mockData = Import-CliXML -Path "$ElasticMockDataLocation\Write-ElasticDocument.Mock"
             Mock Invoke-ElasticRequest -Verifiable -MockWith {
                 return $mockData
             }
 
+            $json = [PSCustomObject]@{
+                timestamp = (Get-Date (Get-Date).AddHours(-10) -f 'yyyyMMddHHmmss')
+                message = 'Mock Insert'
+            } | ConvertTo-Json
+
             # Act
-            $result = Get-ElasticCluster
+            $result = Write-ElasticDocument -Name 'mock' -JSON $json
 
             # Assert
             It "Verifiable mocks are called" {
@@ -35,6 +40,12 @@ InModuleScope $ElasticModule {
             }
             It "Returns a value" {
                 $result | Should -not -BeNullOrEmpty
+            }
+            It "Validates JSON correctly" {
+                { Write-ElasticDocument -Name 'mock' -JSON ($json += 'bad_json') } | Should -Throw
+            }
+            It "Returns the expected value" {
+                $result._index | Should -Be 'mock'
             }
             It "Returns the expected type" {
                 $result -is [object] | Should -Be $true

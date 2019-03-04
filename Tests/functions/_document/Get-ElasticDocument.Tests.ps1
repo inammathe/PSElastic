@@ -7,7 +7,7 @@ Get-Module $ElasticModule | Remove-Module
 Import-Module "$ElasticModuleLocation\$ElasticModule.psd1"
 
 InModuleScope $ElasticModule {
-    Describe "FunctionName Unit Tests" -Tag 'Unit' {
+    Describe "Get-ElasticDocument Unit Tests" -Tag 'Unit' {
         Context "$ElasticFunction return value validation" {
             # Prepare
             Mock Write-ElasticLog -Verifiable -MockWith {} -ParameterFilter {$message -eq $ElasticFunction}
@@ -21,13 +21,13 @@ InModuleScope $ElasticModule {
                 return New-Object psobject -Property $properties
             }
 
-            $mockData = Import-CliXML -Path "$ElasticMockDataLocation\Get-ElasticIndex.Mock"
+            $mockData = Import-CliXML -Path "$ElasticMockDataLocation\Get-ElasticDocument.Mock"
             Mock Invoke-ElasticRequest -Verifiable -MockWith {
                 return $mockData
             }
 
             # Act
-            $result = Get-ElasticCluster
+            $result = Get-ElasticDocument -Name 'mock' -Id 'mock_id'
 
             # Assert
             It "Verifiable mocks are called" {
@@ -35,6 +35,9 @@ InModuleScope $ElasticModule {
             }
             It "Returns a value" {
                 $result | Should -not -BeNullOrEmpty
+            }
+            It "Returns the expected value" {
+                $result._source.message | Should -Be 'mock message'
             }
             It "Returns the expected type" {
                 $result -is [object] | Should -Be $true

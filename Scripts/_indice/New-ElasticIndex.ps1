@@ -14,7 +14,7 @@ function New-ElasticIndex
     [CmdletBinding()]
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory,Position=0)]
         [ValidateNotNullOrEmpty()]
         [ValidateScript({
             if($_ -cnotmatch '^[^A-Z]*$'){
@@ -35,11 +35,11 @@ function New-ElasticIndex
         $Name,
 
         [Parameter(Mandatory=$false, ParameterSetName="Settings")]
-        [int]
+        [System.Nullable``1[[System.Int32]]]
         $number_of_shards,
 
         [Parameter(Mandatory=$false, ParameterSetName="Settings")]
-        [int]
+        [System.Nullable``1[[System.Int32]]]
         $number_of_replicas,
 
         [Parameter(Mandatory=$false, ValueFromPipeline, ValueFromPipelineByPropertyName)]
