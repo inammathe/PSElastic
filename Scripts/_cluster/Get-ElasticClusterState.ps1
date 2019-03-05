@@ -51,11 +51,11 @@ function Get-ElasticClusterState
         Write-ElasticLog "$($MyInvocation.MyCommand)"
         $resource = '_cluster/state'
 
-        if (Get-ParamSetVariables -Parameters $MyInvocation.MyCommand.Parameters -Set 'Metrics' -OutVariable metrics) {
-            $resource += ('/' + (Join-Parts -Separator ',' -Parts ($metrics  | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty 'Name')))
+        if (Get-ElasticParamSetVariables -Parameters $MyInvocation.MyCommand.Parameters -Set 'Metrics' -OutVariable metrics) {
+            $resource += ('/' + (Join-ElasticParts -Separator ',' -Parts ($metrics  | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty 'Name')))
         }
         if ($Indice) {
-            $resource += ('/' + (Join-Parts -Separator ',' -Parts $Indice))
+            $resource += ('/' + (Join-ElasticParts -Separator ',' -Parts $Indice))
         }
     }
     Process

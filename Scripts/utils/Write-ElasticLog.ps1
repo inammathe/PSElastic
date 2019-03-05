@@ -1,4 +1,12 @@
-#region Logging functions
+<#
+.SYNOPSIS
+    Logging function for PSElastic
+.DESCRIPTION
+    This utility function is used by all functions within this module to log function calls, errors and invoke requests
+.EXAMPLE
+    PS C:\> Write-ElasticLog -Message 'test message' -Level 'Info'
+    Write the log message '2019-03-04 13:31:19 INFO: test message' to the default logging location ('C:\Logs\PSElastic.log')
+#>
 function Write-ElasticLog
 {
     [CmdletBinding()]
@@ -70,4 +78,3 @@ function Write-ElasticLog
         "$FormattedDate $LevelText $Message" | Out-File -FilePath $Path -Append
     }
 }
-#endregion

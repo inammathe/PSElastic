@@ -1,6 +1,21 @@
 $moduleLocation = (Get-Item (Split-Path -parent $MyInvocation.MyCommand.Path)).parent.FullName
-$scriptLocations = @("$moduleLocation\Scripts\_cluster")
-$functionsTestLocations = @("$moduleLocation\Tests\functions\_cluster")
+
+$scriptRoot = "$moduleLocation\Scripts"
+$scriptLocations = @(
+    "$scriptRoot\_cluster",
+    "$scriptRoot\_document",
+    "$scriptRoot\_indice",
+    "$scriptRoot\helpers",
+    "$scriptRoot\utils"
+)
+
+$functionTestRoot = "$moduleLocation\Tests\functions"
+$functionsTestLocations = @(
+    "$functionTestRoot\_cluster",
+    "$functionTestRoot\_document",
+    "$functionTestRoot\_indice"
+)
+
 $module = 'PSElastic'
 
 Describe "$module Module Tests" {
@@ -22,6 +37,8 @@ Describe "$module Module Tests" {
             $errors.Count | Should Be 0
         }
     }
+    $testFunctions = (Get-ChildItem $functionsTestLocations).BaseName
+
     foreach ($scriptLocation in $scriptLocations) {
         Context "Function Tests" {
             It "has the scripts directory $scriptLocation" {
@@ -52,12 +69,18 @@ Describe "$module Module Tests" {
                         "$scriptLocation\$function.ps1" | Should -FileContentMatch '.EXAMPLE'
                     }
 
-                    It "$function.ps1 should be an advanced function" {
-                        "$scriptLocation\$function.ps1" | Should -FileContentMatch 'function'
-                        "$scriptLocation\$function.ps1" | Should -FileContentMatch 'cmdletbinding'
-                        "$scriptLocation\$function.ps1" | Should -FileContentMatch 'param'
-                        "$scriptLocation\$function.ps1" | Should -FileContentMatch 'Begin'
-                        "$scriptLocation\$function.ps1" | Should -FileContentMatch 'Process'
+                    if ($scriptLocation -notmatch "helpers|utils") {
+                        It "$function.ps1 should be an advanced function" {
+                            "$scriptLocation\$function.ps1" | Should -FileContentMatch 'function'
+                            "$scriptLocation\$function.ps1" | Should -FileContentMatch 'cmdletbinding'
+                            "$scriptLocation\$function.ps1" | Should -FileContentMatch 'param'
+                            "$scriptLocation\$function.ps1" | Should -FileContentMatch 'Begin'
+                            "$scriptLocation\$function.ps1" | Should -FileContentMatch 'Process'
+                        }
+
+                        It "$function has an associated test function" {
+                            $testFunctions | Where-Object {$_ -eq "$function.Tests"} | Should -Not -BeNullOrEmpty
+                        }
                     }
 
                     It "$function.ps1 is valid PowerShell code" {
@@ -68,13 +91,13 @@ Describe "$module Module Tests" {
                     }
                 }
 
-                foreach ($functionsTestLocation in $functionsTestLocations) {
-                    Context "$function has tests" {
-                        It "$function.Tests.ps1 should exist" {
-                            "$functionsTestLocation\$function.Tests.ps1" | Should -Exist
-                        }
-                    }
-                }
+                #foreach ($functionsTestLocation in $functionsTestLocations) {
+                #    Context "$function has tests" {
+                #        It "$function.Tests.ps1 should exist" {
+                #            "$functionsTestLocation\$function.Tests.ps1" | Should -Exist
+                #        }
+                #    }
+                #}
             }
         }
     }

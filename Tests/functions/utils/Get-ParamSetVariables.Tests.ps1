@@ -7,7 +7,7 @@ Get-Module $ElasticModule | Remove-Module
 Import-Module "$ElasticModuleLocation\$ElasticModule.psd1"
 
 InModuleScope $ElasticModule {
-    Describe "Get-ParamSetVariables Unit Tests" -Tag 'Unit' {
+    Describe "Get-ElasticParamSetVariables Unit Tests" -Tag 'Unit' {
         Context "$ElasticFunction return value validation" {
             # Prepare
             function Test-Function {
@@ -24,7 +24,7 @@ InModuleScope $ElasticModule {
                     [switch]
                     $param3
                 )
-                Get-ParamSetVariables -Parameters $MyInvocation.MyCommand.Parameters -Set 'Params'
+                Get-ElasticParamSetVariables -Parameters $MyInvocation.MyCommand.Parameters -Set 'Params'
             }
 
             # Act

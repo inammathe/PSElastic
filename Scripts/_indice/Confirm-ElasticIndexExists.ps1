@@ -25,7 +25,7 @@ function Confirm-ElasticIndexExists
     Begin
     {
         Write-ElasticLog "$($MyInvocation.MyCommand)"
-        [string]$Name = Join-Parts -Separator ',' -Parts $Name
+        [string]$Name = Join-ElasticParts -Separator ',' -Parts $Name
     }
     Process
     {

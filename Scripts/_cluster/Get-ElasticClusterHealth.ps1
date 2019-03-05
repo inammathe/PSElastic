@@ -35,10 +35,10 @@ function Get-ElasticClusterHealth
     Begin
     {
         Write-ElasticLog "$($MyInvocation.MyCommand)"
-        $queryVariables = Get-ParamSetVariables -Parameters $MyInvocation.MyCommand.Parameters
+        $queryVariables = Get-ElasticParamSetVariables -Parameters $MyInvocation.MyCommand.Parameters
         $resource = '_cluster/health'
         if ($Indice) {
-            $resource += ('/' + (Join-Parts -Separator ',' -Parts $Indice))
+            $resource += ('/' + (Join-ElasticParts -Separator ',' -Parts $Indice))
         }
     }
     Process

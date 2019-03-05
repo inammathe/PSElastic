@@ -1,4 +1,13 @@
-function Get-ParamSetVariables {
+<#
+.SYNOPSIS
+    Creates an object from a named parameter set
+.DESCRIPTION
+    Uses $MyInvocation.MyCommand.Parameters to create a custom object based on a function's named parameter set.
+.EXAMPLE
+    PS C:\> Get-ElasticParamSetVariables -Parameters $MyInvocation.MyCommand.Parameters -Set 'Test'
+    Returns an ordered object containing the name and value of all variables from the named parameter set 'Test'
+#>
+function Get-ElasticParamSetVariables {
     [CmdletBinding()]
     param (
         $Parameters,

@@ -23,7 +23,7 @@ function Write-ElasticDocument
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [ValidateScript({
-            if(!(Test-Json $_))
+            if(!(Test-ElasticJson $_))
             {
                 Write-ElasticLog -Level 'Error' -Message "'$_' Must be valid JSON" -ErrorAction Stop
             }else {
@@ -47,11 +47,11 @@ function Write-ElasticDocument
         $resource = '_doc'
         if ($Id) {
             $method = 'PUT'
-            $resource = Join-Parts -Separator '/' -Parts $Name,$resource,$Id
+            $resource = Join-ElasticParts -Separator '/' -Parts $Name,$resource,$Id
         }
         else {
             $method = 'POST'
-            $resource = Join-Parts -Separator '/' -Parts $Name,$resource
+            $resource = Join-ElasticParts -Separator '/' -Parts $Name,$resource
         }
     }
     Process

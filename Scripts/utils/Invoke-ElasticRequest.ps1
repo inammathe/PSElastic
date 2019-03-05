@@ -1,3 +1,12 @@
+<#
+.SYNOPSIS
+    Invokes requests to elastic
+.DESCRIPTION
+    Used by most functions to talk to your configured elastic endpoint. Performs some basic string building and validation
+.EXAMPLE
+    PS C:\> Invoke-ElasticRequest -ElasticConnection (Get-ElasticConnection) -Resource '_cluster/health'
+    Performs a get request to https://yourelasticendpoint.com/_cluster/health
+#>
 function Invoke-ElasticRequest {
     [cmdletBinding(SupportsShouldProcess)]
     param (
@@ -18,9 +27,9 @@ function Invoke-ElasticRequest {
         [string]$Content
     )
     If ($PSCmdlet.ShouldProcess("Message")) {
-        $uri = (Join-Parts -Separator '/' -Parts $ElasticConnection.BaseUrl,$Resource)
+        $uri = (Join-ElasticParts -Separator '/' -Parts $ElasticConnection.BaseUrl,$Resource)
         if ($QueryVariables) {
-            $uri += Get-QueryString -QueryVariables $QueryVariables
+            $uri += Get-ElasticQueryString -QueryVariables $QueryVariables
         }
         if (!$Content) {
             Write-ElasticLog "$Method $uri"
