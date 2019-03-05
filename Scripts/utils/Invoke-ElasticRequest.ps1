@@ -25,7 +25,7 @@ function Invoke-ElasticRequest {
 
         [Parameter(Mandatory=$false)]
         [ValidateScript({
-            if(!(Test-ElasticJson $_))
+            if($_ -and !(Test-ElasticJson $_))
             {
                 Write-ElasticLog -Level 'Error' -Message "'$_' Must be valid JSON" -ErrorAction Stop
             }else {
