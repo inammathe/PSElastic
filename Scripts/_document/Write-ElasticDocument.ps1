@@ -1,11 +1,11 @@
 <#
 .SYNOPSIS
-    This indice API allows you to remove one or more indices.
+    This indice API allows you to write a document to one ore more indices
 .DESCRIPTION
-    This indice API allows you to remove one or more indices. All documents in Elasticsearch are stored inside of one index or another.
+    This indice API allows you to write a document to one ore more indices. All documents in Elasticsearch are stored inside of one index or another.
 .EXAMPLE
     PS C:\> Write-ElasticDocument -Name 'myindex'
-    Removes the index 'myindex'
+    writes the index 'myindex'
 .LINK
     https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-delete-index.html
 #>

@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
-    This indice API allows you to Get one or more indices.
+    This document API allows you to get one or more indices.
 .DESCRIPTION
-    This indice API allows you to Get one or more indices. All documents in Elasticsearch are stored inside of one index or another.
+    This indice API allows you to get one or more indices. All documents in Elasticsearch are stored inside of one index or another.
 .EXAMPLE
     PS C:\> Get-ElasticDocument -Name 'myindex'
     Gets the index 'myindex'
