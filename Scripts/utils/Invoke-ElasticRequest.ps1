@@ -24,6 +24,14 @@ function Invoke-ElasticRequest {
         [string]$Method = 'GET',
 
         [Parameter(Mandatory=$false)]
+        [ValidateScript({
+            if(!(Test-ElasticJson $_))
+            {
+                Write-ElasticLog -Level 'Error' -Message "'$_' Must be valid JSON" -ErrorAction Stop
+            }else {
+                return $true
+            }
+        })]
         [string]$Content
     )
     If ($PSCmdlet.ShouldProcess("Message")) {

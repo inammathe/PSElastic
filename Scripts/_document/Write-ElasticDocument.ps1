@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
-    This indice API allows you to write a document to one ore more indices
+    This document API allows you to write a document to one ore more indices
 .DESCRIPTION
-    This indice API allows you to write a document to one ore more indices. All documents in Elasticsearch are stored inside of one index or another.
+    This document API allows you to write a document to one ore more indices. All documents in Elasticsearch are stored inside of one index or another.
 .EXAMPLE
     PS C:\> Write-ElasticDocument -Name 'myindex'
     writes the index 'myindex'
@@ -22,15 +22,7 @@ function Write-ElasticDocument
 
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [ValidateScript({
-            if(!(Test-ElasticJson $_))
-            {
-                Write-ElasticLog -Level 'Error' -Message "'$_' Must be valid JSON" -ErrorAction Stop
-            }else {
-                return $true
-            }
-        })]
-        [object]
+        [string]
         $JSON,
 
         [Parameter(Mandatory=$false)]
