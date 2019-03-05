@@ -50,8 +50,8 @@ InModuleScope $ElasticModule {
             It "Returns the expected type" {
                 $result -is [object] | Should -Be $true
             }
-            It "Calls Get-ElasticConnection and is only invoked once" {
-                Assert-MockCalled -CommandName Get-ElasticConnection -Times 1 -Exactly
+            It "Calls Get-ElasticConnection and is invoked twice" {
+                Assert-MockCalled -CommandName Get-ElasticConnection -Times 2 -Exactly
             }
         }
     }
