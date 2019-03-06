@@ -1,10 +1,12 @@
 <#
 .SYNOPSIS
-    Gets the health status of the cluster
+    The cluster health API allows to get a very simple status on the health of the cluster
 .DESCRIPTION
     The cluster health API allows to get a very simple status on the health of the cluster
 .EXAMPLE
-    PS C:\> Get-ElasticNodes
+    PS C:\> Get-ElasticClusterHealth
+.LINK
+    https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-health.html
 #>
 function Get-ElasticClusterHealth
 {

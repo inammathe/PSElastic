@@ -7,7 +7,7 @@
     PS C:\> Test-ElasticTypeExists -Type '_doc'
     Checks if the index mapping type '_doc' exists
 .LINK
-    https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-state.html
+    https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-types-exists.html
 #>
 function Test-ElasticTypeExists
 {
