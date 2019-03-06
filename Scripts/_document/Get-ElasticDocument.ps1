@@ -31,7 +31,7 @@ function Get-ElasticDocument
     Begin
     {
         Write-ElasticLog "$($MyInvocation.MyCommand)"
-        $resource = Join-ElasticParts -Separator '/' -Parts $Name,'_doc',$Id
+        $resource = Join-ElasticParts -Separator '/' -Parts $Name, '_doc', $Id
     }
     Process
     {
