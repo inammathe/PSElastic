@@ -10,11 +10,11 @@ Installation
 If you have [WMF 5.0](https://www.microsoft.com/en-us/download/details.aspx?id=50395) or [PowerShellGet ](https://docs.microsoft.com/en-us/powershell/gallery/readme) installed:
 
 ```PowerShell
-#Inspect
+# Inspect
 PS> Save-Module -Name pselastic -Path <path>
 ```
 ```PowerShell
-#Install
+# Install
 PS> Install-Module -Name pselastic
 ```
 
