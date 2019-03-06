@@ -20,7 +20,7 @@ function Write-ElasticLog
 
         [Parameter(Mandatory=$false)]
         [Alias('LogPath')]
-        [string]$Path='C:\Logs\PSElastic.log',
+        [string]$Path='.\Logs\PSElastic.log',
 
         [Parameter(Mandatory=$false)]
         [ValidateSet("Error","Warn","Info")]
