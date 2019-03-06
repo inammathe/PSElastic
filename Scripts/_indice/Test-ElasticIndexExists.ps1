@@ -4,12 +4,12 @@
 .DESCRIPTION
     The get index API allows to retrieve information about one or more indexes. All documents in Elasticsearch are stored inside of one index or another.
 .EXAMPLE
-    PS C:\> Confirm-ElasticIndexExists
+    PS C:\> Test-ElasticIndexExists
     Returns an index
 .LINK
     https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-state.html
 #>
-function Confirm-ElasticIndexExists
+function Test-ElasticIndexExists
 {
     [CmdletBinding()]
     param

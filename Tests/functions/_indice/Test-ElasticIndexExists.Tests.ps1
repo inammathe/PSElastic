@@ -7,7 +7,7 @@ Get-Module $ElasticModule | Remove-Module
 Import-Module "$ElasticModuleLocation\$ElasticModule.psd1"
 
 InModuleScope $ElasticModule {
-    Describe "Confirm-ElasticIndexExists Unit Tests" -Tag 'Unit' {
+    Describe "Test-ElasticIndexExists Unit Tests" -Tag 'Unit' {
         Context "$ElasticFunction return value validation" {
             # Prepare
             Mock Write-ElasticLog -Verifiable -MockWith {} -ParameterFilter {$message -eq $ElasticFunction}
@@ -26,7 +26,7 @@ InModuleScope $ElasticModule {
             } -ParameterFilter {$Resource -eq 'mockPass'}
 
             # Act
-            $result_success = Confirm-ElasticIndexExists -Name 'mockPass'
+            $result_success = Test-ElasticIndexExists -Name 'mockPass'
 
             # Assert
             It "Verifiable mocks are called" {
