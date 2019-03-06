@@ -6,9 +6,9 @@
     about the current nodes that form the cluster (number, roles, os, jvm versions, memory usage, cpu and installed plugins).
 .EXAMPLE
     PS C:\> Get-ElasticClusterStats
-    Returns a comprehensive state information of the whole cluster
+    Retrieves statistics from a cluster wide perspective
 .LINK
-    https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-state.html
+    https://www.elastic.co/guide/en/elasticsearch/reference/6.6/cluster-stats.html
 #>
 function Get-ElasticClusterStats
 {
