@@ -12,9 +12,9 @@ function Get-ElasticQueryString {
         [PSCustomObject]$QueryVariables
     )
     $variables = foreach ($variable in $QueryVariables | Get-Member -MemberType NoteProperty) {
-        $name = $variable.Name.ToLower()
+        $name = $variable.Name
         $value = $QueryVariables."$($variable.Name)"
-        "$name=$value"
+        "$name=$value".ToLower()
     }
     if ($variables) {
         Write-Output ('?' + (Join-ElasticParts -Separator '&' -Parts $variables))
