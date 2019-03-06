@@ -1,13 +1,13 @@
 <#
 .SYNOPSIS
-    This document API allows you to get one or more indices.
+    The get API allows to get a typed JSON document from the index based on its id
 .DESCRIPTION
-    This indice API allows you to get one or more indices. All documents in Elasticsearch are stored inside of one index or another.
+    The get API allows to get a typed JSON document from the index based on its id
 .EXAMPLE
-    PS C:\> Get-ElasticDocument -Name 'myindex'
-    Gets the index 'myindex'
+    PS C:\> Get-ElasticDocument -Name 'myindex' -Id 1
+    Gets the document with the Id 1 from index myindex
 .LINK
-    https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-delete-index.html
+    https://www.elastic.co/guide/en/elasticsearch/reference/6.6/docs-get.html
 #>
 function Get-ElasticDocument
 {

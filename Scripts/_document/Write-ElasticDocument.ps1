@@ -1,13 +1,13 @@
 <#
 .SYNOPSIS
-    This document API allows you to write a document to one ore more indices
+    The index API adds or updates a typed JSON document in a specific index, making it searchable.
 .DESCRIPTION
-    This document API allows you to write a document to one ore more indices. All documents in Elasticsearch are stored inside of one index or another.
+    The index API adds or updates a typed JSON document in a specific index, making it searchable.
 .EXAMPLE
-    PS C:\> Write-ElasticDocument -Name 'myindex'
-    writes the index 'myindex'
+    PS C:\> Write-ElasticDocument -Name 'myindex' -JSON (@{message = 'hello world'} | ConvertTo-JSON) -Id 1
+    writes a document to the index 'myindex'
 .LINK
-    https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-delete-index.html
+    https://www.elastic.co/guide/en/elasticsearch/reference/6.6/docs-index_.html
 #>
 function Write-ElasticDocument
 {
@@ -53,14 +53,3 @@ function Write-ElasticDocument
         }
     }
 }
-
-#$json = [PSCustomObject]@{
-#    timestamp = (Get-Date (Get-Date).AddHours(-10) -f 'yyyyMMddHHmmss')
-#    message = 'Auto Insert'
-#} | ConvertTo-Json
-##
-#
-#Write-ElasticDocument -Name 'practice' -JSON $json
-#
-#Remove-ElasticIndex -Name 'practice'
-#New-ElasticIndex -Name 'practice' -number_of_shards 1 -number_of_replicas 0
