@@ -10,7 +10,7 @@ InModuleScope $ElasticModule {
     Describe "New-ElasticIndex Unit Tests" -Tag 'Unit' {
         Context "$ElasticFunction return value validation" {
             # Prepare
-            Mock Write-ElasticLog -Verifiable -MockWith {} -ParameterFilter {$message -eq $ElasticFunction}
+            Mock Write-ElasticLog -Verifiable -MockWith {}
 
             Mock Get-ElasticConnection -MockWith {
                 $properties = [ordered]@{
@@ -60,8 +60,8 @@ InModuleScope $ElasticModule {
                 # Cannot be longer than 255 bytes
                 { New-ElasticIndex -Name ('m'*256) } | Should -Throw
             }
-            It "Calls Write-ElasticLog and is only invoked once" {
-                Assert-MockCalled -CommandName Write-ElasticLog -Times 1 -Exactly
+            It "Calls Write-ElasticLog" {
+                Assert-MockCalled -CommandName Write-ElasticLog
             }
             It "Calls Get-ElasticConnection and is only invoked once" {
                 Assert-MockCalled -CommandName Get-ElasticConnection -Times 1 -Exactly
