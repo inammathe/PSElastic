@@ -16,6 +16,7 @@ function Get-ElasticIndex
     (
         [Parameter(Mandatory=$false)]
         [ValidateNotNullOrEmpty()]
+        [Alias('Index', 'Indice')]
         [string[]]
         $Name = '_all',
 

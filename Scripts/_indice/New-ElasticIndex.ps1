@@ -31,6 +31,7 @@ function New-ElasticIndex
                 $true
             }
         })]
+        [Alias('Index', 'Indice')]
         [string[]]
         $Name,
 

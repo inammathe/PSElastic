@@ -16,7 +16,7 @@ function Get-ElasticMapping
     (
         [Parameter(Mandatory=$false)]
         [ValidateNotNullOrEmpty()]
-        [Alias("Index")]
+        [Alias('Index', 'Indice')]
         [string[]]
         $Name = '_all',
 

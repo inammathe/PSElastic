@@ -16,6 +16,7 @@ function Remove-ElasticIndex
     (
         [Parameter(Mandatory,Position=0)]
         [ValidateNotNullOrEmpty()]
+        [Alias('Index', 'Indice')]
         [string[]]
         $Name,
 
