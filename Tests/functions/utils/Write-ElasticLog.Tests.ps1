@@ -19,7 +19,7 @@ InModuleScope $ElasticModule {
             }
 
             # Act
-            $result = Write-ElasticLog -Message 'test message' -Level 'Info'
+            $result = Write-ElasticLog -Message 'test message' -Level 'Info' -Path 'mock'
 
             # Assert
             It "Returns the expected type" {
