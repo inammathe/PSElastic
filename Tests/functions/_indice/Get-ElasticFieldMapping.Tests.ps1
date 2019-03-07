@@ -44,7 +44,7 @@ InModuleScope $ElasticModule {
                 $result -is [object] | Should -Be $true
             }
             It "Throws when no field is specified" {
-                { Get-ElasticFieldMapping } | Should -Throw
+                { Get-ElasticFieldMapping -Field $null } | Should -Throw
             }
             It "Calls Write-ElasticLog and is only invoked once" {
                 Assert-MockCalled -CommandName Write-ElasticLog -Times 1 -Exactly

@@ -1,9 +1,15 @@
 # This can be used to manually kick off the pester tests without having to go through the pipeline
+param(
+    [switch]$noInstall
+)
+
 try
 {
     $currentLocation = Split-Path -parent $MyInvocation.MyCommand.Path
     if (!(Get-Module Pester)) {
-        Install-Module -Name Pester -Force
+        if (!$noInstall) {
+            Install-Module -Name Pester -Force
+        }
         Import-Module -Name Pester
     }
 
