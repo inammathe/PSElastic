@@ -31,9 +31,6 @@ InModuleScope $ElasticModule {
             It "Throws on error" {
                 { Write-ElasticLog -Message 'test message' -Level 'Error' -ErrorAction Stop } | Should -Throw
             }
-            It "Calls Out-File and is invoked twice" {
-                Assert-MockCalled -CommandName Out-File -Times 2 -Exactly
-            }
             It "Uses all verifiable mocks" {
                 Assert-VerifiableMock
             }
