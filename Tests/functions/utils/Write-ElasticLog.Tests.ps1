@@ -14,6 +14,10 @@ InModuleScope $ElasticModule {
                 $_ | Write-Output
             }
 
+            Mock Test-Path -Verifiable -MockWith {
+                $true
+            }
+
             # Act
             $result = Write-ElasticLog -Message 'test message' -Level 'Info'
 
@@ -29,6 +33,9 @@ InModuleScope $ElasticModule {
             }
             It "Calls Out-File and is invoked twice" {
                 Assert-MockCalled -CommandName Out-File -Times 2 -Exactly
+            }
+            It "Uses all verifiable mocks" {
+                Assert-VerifiableMock
             }
         }
     }
