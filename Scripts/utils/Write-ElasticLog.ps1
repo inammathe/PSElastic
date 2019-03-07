@@ -41,7 +41,7 @@ function Write-ElasticLog
                 if([string]::IsNullOrEmpty($Path)){ throw }
             }
             catch {
-                $Path = '.\Logs\PSElastic.log'
+                $Path = "$moduleFolder\Logs\PSElastic.log"
             }
         }
 
