@@ -21,7 +21,11 @@ InModuleScope $ElasticModule {
                 return New-Object psobject -Property $properties
             }
 
-            $mockData = Import-CliXML -Path "$ElasticMockDataLocation\Get-ElasticIndex.Mock"
+            $mockLocation = "$ElasticMockDataLocation\Get-ElasticMapping.Mock"
+            if (Test-Path $mockLocation) {
+                $mockData = Import-CliXML -Path $mockLocation
+            }
+
             Mock Invoke-ElasticRequest -Verifiable -MockWith {
                 return $mockData
             }
