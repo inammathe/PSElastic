@@ -20,7 +20,7 @@ function Write-ElasticLog
 
         [Parameter(Mandatory=$false)]
         [Alias('LogPath')]
-        [string]$Path='.\Logs\PSElastic.log',
+        [string]$Path,
 
         [Parameter(Mandatory=$false)]
         [ValidateSet("Error","Warn","Info")]
@@ -32,6 +32,19 @@ function Write-ElasticLog
 
     Begin
     {
+        # Set Logging path if not supplied
+        if (!$Path) {
+            $moduleFolder = (Get-Item (Get-Module 'PSElastic').Path).Directory.FullName
+            $configPath = "$moduleFolder\PSElastic.json"
+            try {
+                $Path = (Get-Content $configPath | ConvertFrom-Json).Logging.Path
+                if([string]::IsNullOrEmpty($Path)){ throw }
+            }
+            catch {
+                $Path = '.\Logs\PSElastic.log'
+            }
+        }
+
         # Set VerbosePreference to Continue so that verbose messages are displayed.
         $VerbosePreference = $PSCmdlet.GetVariableValue('VerbosePreference')
     }
@@ -42,17 +55,12 @@ function Write-ElasticLog
         if ((Test-Path $Path) -AND $NoClobber) {
             Write-Error "Log file $Path already exists, and you specified NoClobber. Either delete the file or specify a different name."
             Return
-            }
-
+        }
         # If attempting to write to a log file in a folder/path that doesn't exist create the file including the path.
         elseif (!(Test-Path $Path)) {
             Write-Verbose "Creating $Path."
             New-Item $Path -Force -ItemType File | Out-Null
-            }
-
-        else {
-            # Nothing to see here yet.
-            }
+        }
 
         # Format Date for our Log File
         $FormattedDate = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
@@ -60,21 +68,17 @@ function Write-ElasticLog
         # Write message to error, warning, or verbose pipeline and specify $LevelText
         switch ($Level) {
             'Error' {
-                $LevelText = 'ERROR:'
-                "$FormattedDate $LevelText $Message" | Out-File -FilePath $Path -Append
+                "$FormattedDate ERROR: $Message" | Out-File -FilePath $Path -Append
                 Write-Error $Message
-                }
-            'Warn' {
-                $LevelText = 'WARNING:'
-                Write-Warning $Message
-                }
-            'Info' {
-                $LevelText = 'INFO:'
-                Write-Verbose $Message
-                }
             }
-
-        # Write log entry to $Path
-        "$FormattedDate $LevelText $Message" | Out-File -FilePath $Path -Append
+            'Warn' {
+                "$FormattedDate WARNING: $Message" | Out-File -FilePath $Path -Append
+                Write-Warning $Message
+            }
+            'Info' {
+                "$FormattedDate INFO: $Message" | Out-File -FilePath $Path -Append
+                Write-Verbose $Message
+            }
+        }
     }
 }
