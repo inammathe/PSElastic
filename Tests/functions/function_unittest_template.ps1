@@ -21,7 +21,7 @@ InModuleScope $ElasticModule {
                 return New-Object psobject -Property $properties
             }
 
-            $mockLocation = "$ElasticMockDataLocation\Get-ElasticMapping.Mock"
+            $mockLocation = "$ElasticMockDataLocation\FunctionName.Mock"
             if (Test-Path $mockLocation) {
                 $mockData = Import-CliXML -Path $mockLocation
             }
@@ -43,8 +43,8 @@ InModuleScope $ElasticModule {
             It "Returns the expected type" {
                 $result -is [object] | Should -Be $true
             }
-            It "Calls Get-ElasticConnection and is only invoked once" {
-                Assert-MockCalled -CommandName Get-ElasticConnection -Times 1 -Exactly
+            It "Calls verifiable mocks" {
+                Assert-VerifiableMock
             }
         }
     }
