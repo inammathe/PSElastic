@@ -13,7 +13,7 @@ try
         Import-Module -Name Pester
     }
 
-    Invoke-Pester "$currentLocation\Tests\" -OutputFile All.TestResults.xml -OutputFormat NUnitXml -ExcludeTag Smoke
+    Invoke-Pester "$currentLocation\Tests\" -OutputFile All.TestResults.xml -OutputFormat NUnitXml -ExcludeTag Smoke -CodeCoverage "$currentLocation\Scripts\*\*" -CodeCoverageOutputFile All.CoverageResults.xml
 }
 catch
 {
