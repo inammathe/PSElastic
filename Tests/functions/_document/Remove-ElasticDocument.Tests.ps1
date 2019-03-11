@@ -7,7 +7,7 @@ Get-Module $ElasticModule | Remove-Module
 Import-Module "$ElasticModuleLocation\$ElasticModule.psd1"
 
 InModuleScope $ElasticModule {
-    Describe "FunctionName Unit Tests" -Tag 'Unit' {
+    Describe "Remove-ElasticDocument Unit Tests" -Tag 'Unit' {
         Context "$ElasticFunction return value validation" {
             # Prepare
             Mock Write-ElasticLog -Verifiable -MockWith {} -ParameterFilter {$message -eq $ElasticFunction}
@@ -31,7 +31,7 @@ InModuleScope $ElasticModule {
             }
 
             # Act
-            $result = FunctionName
+            $result = Remove-ElasticDocument -Name 'test' -Id '1'
 
             # Assert
             It "Verifiable mocks are called" {
@@ -42,6 +42,9 @@ InModuleScope $ElasticModule {
             }
             It "Returns the expected type" {
                 $result -is [object] | Should -Be $true
+            }
+            It "Calls verifiable mocks" {
+                Assert-VerifiableMock
             }
         }
     }
