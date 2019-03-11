@@ -14,29 +14,30 @@ function Get-ElasticDocument
     [CmdletBinding()]
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [Alias("Index")]
+        [Alias("_index","Index")]
         [string]
         $Name,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
-        [string]
+        [Alias("_id")]
+        [string[]]
         $Id,
 
-        [Parameter(Mandatory=$false, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory=$false)]
         $ElasticConnection = (Get-ElasticConnection)
     )
     Begin
     {
         Write-ElasticLog "$($MyInvocation.MyCommand)"
-        $resource = Join-ElasticParts -Separator '/' -Parts $Name, '_doc', $Id
     }
     Process
     {
-        foreach ($connection in $ElasticConnection) {
-            Invoke-ElasticRequest -ElasticConnection $connection -Resource ($resource) -Method 'GET'
+        foreach ($document in $Id) {
+            $resource = Join-ElasticParts -Separator '/' -Parts $Name, '_doc', $document
+            Invoke-ElasticRequest -ElasticConnection $ElasticConnection -Resource $resource -Method 'GET'
         }
     }
 }
