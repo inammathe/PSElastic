@@ -11,6 +11,7 @@ Properties {
     $Timestamp = Get-Date -UFormat "%Y%m%d-%H%M%S"
     $PSVersion = $PSVersionTable.PSVersion.Major
     $TestFile = "TestResults_PS$PSVersion`_$TimeStamp.xml"
+    $CoverageFile = "CoverageResults_PS$PSVersion`_$TimeStamp.xml"
     $lines = '----------------------------------------------------------------------'
 
     $Verbose = @{}
@@ -35,7 +36,7 @@ Task Test -Depends Init  {
     "`n`tSTATUS: Testing with PowerShell $PSVersion"
 
     # Gather test results. Store them in a variable and file
-    $TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile"
+    $TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile" -CodeCoverage "$ProjectRoot\Scripts\*\*" -CodeCoverageOutputFile $ProjectRoot\$CoverageFile
 
     # In Appveyor?  Upload our tests! #Abstract this into a function?
     If($ENV:BHBuildSystem -eq 'AppVeyor')
@@ -43,15 +44,26 @@ Task Test -Depends Init  {
         (New-Object 'System.Net.WebClient').UploadFile(
             "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)",
             "$ProjectRoot\$TestFile" )
+
+            (New-Object 'System.Net.WebClient').UploadFile(
+            "https://ci.appveyor.com/api/testresults/nunit/$($env:APPVEYOR_JOB_ID)",
+            "$ProjectRoot\$CoverageFile" )
     }
 
     Remove-Item "$ProjectRoot\$TestFile" -Force -ErrorAction SilentlyContinue
+    Remove-Item "$ProjectRoot\$CoverageFile" -Force -ErrorAction SilentlyContinue
 
     # Failed tests?
     # Need to tell psake or it will proceed to the deployment. Danger!
     if($TestResults.FailedCount -gt 0)
     {
         Write-Error "Failed '$($TestResults.FailedCount)' tests, build failed"
+    }
+
+    # Bad coverage?
+    $coverage = $TestResults.CodeCoverage.NumberOfCommandsExecuted / $TestResults.CodeCoverage.NumberOfCommandsAnalyzed
+    if ($coverage -lt 0.5) {
+        Write-Error "Test code coverage is very low - $($coverage * 100)%, build failed"
     }
     "`n"
 }
