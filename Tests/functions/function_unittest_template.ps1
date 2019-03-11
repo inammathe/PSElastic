@@ -12,7 +12,7 @@ InModuleScope $ElasticModule {
             # Prepare
             Mock Write-ElasticLog -Verifiable -MockWith {} -ParameterFilter {$message -eq $ElasticFunction}
 
-            Mock Get-ElasticConnection -MockWith {
+            Mock Get-ElasticConnection -Verifiable -MockWith {
                 $properties = [ordered]@{
                     BaseUrl = 'https://mockBaseUrl:9200'
                     Header = @{'Authorization' = 'mockAuth'}
@@ -21,26 +21,27 @@ InModuleScope $ElasticModule {
                 return New-Object psobject -Property $properties
             }
 
-            $mockData = Import-CliXML -Path "$ElasticMockDataLocation\Get-ElasticIndex.Mock"
+            $mockLocation = "$ElasticMockDataLocation\$ElasticFunction.Mock"
+            if (Test-Path $mockLocation) {
+                $mockData = Import-CliXML -Path $mockLocation
+            }
+
             Mock Invoke-ElasticRequest -Verifiable -MockWith {
                 return $mockData
             }
 
             # Act
-            $result = Get-ElasticCluster
+            $result = FunctionName
 
             # Assert
             It "Verifiable mocks are called" {
-                Assert-VerifiableMock
+                Assert-VerifiableMocks
             }
             It "Returns a value" {
                 $result | Should -not -BeNullOrEmpty
             }
             It "Returns the expected type" {
                 $result -is [object] | Should -Be $true
-            }
-            It "Calls Get-ElasticConnection and is only invoked once" {
-                Assert-MockCalled -CommandName Get-ElasticConnection -Times 1 -Exactly
             }
         }
     }
