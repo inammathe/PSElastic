@@ -31,7 +31,7 @@ InModuleScope $ElasticModule {
             }
 
             # Act
-            $result = Get-ElasticCluster
+            $result = FunctionName
 
             # Assert
             It "Verifiable mocks are called" {
