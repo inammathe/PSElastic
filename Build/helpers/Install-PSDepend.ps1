@@ -31,14 +31,14 @@
     try {
         # Bootstrap nuget if we don't have it
         if(-not ($NugetPath = (Get-Command 'nuget.exe' -ErrorAction SilentlyContinue).Path)) {
-            $NugetPath = Join-Path $ENV:USERPROFILE nuget.exe
+            $NugetPath = Join-Path $HOME nuget.exe
             if(-not (Test-Path $NugetPath)) {
                 Invoke-WebRequest -uri 'https://dist.nuget.org/win-x86-commandline/latest/nuget.exe' -OutFile $NugetPath
             }
         }
 
         # Bootstrap PSDepend, re-use nuget.exe for the module
-        if($path) { $null = mkdir $path -Force }
+        if(!(Test-Path $Path)) { New-Item $Path -ItemType Directory -Force | Out-Null }
         $NugetParams = 'install', 'PSDepend', '-Source', 'https://www.powershellgallery.com/api/v2/',
                     '-ExcludeVersion', '-NonInteractive', '-OutputDirectory', $Path
         & $NugetPath @NugetParams
