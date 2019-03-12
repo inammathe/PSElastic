@@ -34,9 +34,6 @@ InModuleScope $ElasticModule {
             $result = FunctionName
 
             # Assert
-            It "Verifiable mocks are called" {
-                Assert-VerifiableMock
-            }
             It "Returns a value" {
                 $result | Should -not -BeNullOrEmpty
             }
