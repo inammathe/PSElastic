@@ -5,6 +5,7 @@ $scriptLocations = @(
     "$scriptRoot\_cluster",
     "$scriptRoot\_document",
     "$scriptRoot\_indice",
+    "$scriptRoot\_search",
     "$scriptRoot\helpers",
     "$scriptRoot\utils"
 )
@@ -13,7 +14,8 @@ $functionTestRoot = "$moduleLocation\Tests\functions"
 $functionsTestLocations = @(
     "$functionTestRoot\_cluster",
     "$functionTestRoot\_document",
-    "$functionTestRoot\_indice"
+    "$functionTestRoot\_indice",
+    "$functionTestRoot\_search"
 )
 
 $module = 'PSElastic'
@@ -90,14 +92,6 @@ Describe "$module Module Tests" {
                         $errors.Count | Should Be 0
                     }
                 }
-
-                #foreach ($functionsTestLocation in $functionsTestLocations) {
-                #    Context "$function has tests" {
-                #        It "$function.Tests.ps1 should exist" {
-                #            "$functionsTestLocation\$function.Tests.ps1" | Should -Exist
-                #        }
-                #    }
-                #}
             }
         }
     }
