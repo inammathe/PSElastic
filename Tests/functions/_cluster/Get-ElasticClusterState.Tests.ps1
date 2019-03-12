@@ -27,7 +27,7 @@ InModuleScope $ElasticModule {
             }
 
             # Act
-            $result = Get-ElasticClusterState
+            $result = Get-ElasticClusterState -Indice 'mock' -version -master_node -nodes -routing_table -metadata -blocks
 
             # Assert
             It "Verifiable mocks are called" {
@@ -38,15 +38,6 @@ InModuleScope $ElasticModule {
             }
             It "Returns the expected type" {
                 $result -is [object] | Should -Be $true
-            }
-            It "Calls Write-ElasticLog and is only invoked once" {
-                Assert-MockCalled -CommandName Write-ElasticLog -Times 1 -Exactly
-            }
-            It "Calls Get-ElasticConnection and is only invoked once" {
-                Assert-MockCalled -CommandName Get-ElasticConnection -Times 1 -Exactly
-            }
-            It "Calls Invoke-ElasticRequest and is only invoked once" {
-                Assert-MockCalled -CommandName Invoke-ElasticRequest -Times 1 -Exactly
             }
         }
     }

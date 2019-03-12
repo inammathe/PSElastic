@@ -27,7 +27,7 @@ InModuleScope $ElasticModule {
             }
 
             # Act
-            $result = New-ElasticIndex -Name 'mock'
+            $result = New-ElasticIndex -Name 'mock' -number_of_shards 1 -number_of_replicas 0
 
             # Assert
             It "Verifiable mocks are called" {
@@ -59,15 +59,6 @@ InModuleScope $ElasticModule {
 
                 # Cannot be longer than 255 bytes
                 { New-ElasticIndex -Name ('m'*256) } | Should -Throw
-            }
-            It "Calls Write-ElasticLog" {
-                Assert-MockCalled -CommandName Write-ElasticLog
-            }
-            It "Calls Get-ElasticConnection and is only invoked once" {
-                Assert-MockCalled -CommandName Get-ElasticConnection -Times 1 -Exactly
-            }
-            It "Calls Invoke-ElasticRequest and is only invoked once" {
-                Assert-MockCalled -CommandName Invoke-ElasticRequest -Times 1 -Exactly
             }
         }
     }

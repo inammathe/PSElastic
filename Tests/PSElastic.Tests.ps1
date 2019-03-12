@@ -15,7 +15,8 @@ $functionsTestLocations = @(
     "$functionTestRoot\_cluster",
     "$functionTestRoot\_document",
     "$functionTestRoot\_indice",
-    "$functionTestRoot\_search"
+    "$functionTestRoot\_search",
+    "$functionTestRoot\utils"
 )
 
 $module = 'PSElastic'
