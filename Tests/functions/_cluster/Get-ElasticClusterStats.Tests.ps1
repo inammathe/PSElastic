@@ -31,7 +31,8 @@ InModuleScope $ElasticModule {
             }
 
             # Act
-            $result = Get-ElasticClusterStats -NodeFilter 'mock_node'
+            $result = Get-ElasticClusterStats
+            $result_node_filter = Get-ElasticClusterStats -NodeFilter 'mock_node'
 
             # Assert
             It "Verifiable mocks are called" {
@@ -39,9 +40,11 @@ InModuleScope $ElasticModule {
             }
             It "Returns a value" {
                 $result | Should -not -BeNullOrEmpty
+                $result_node_filter | Should -not -BeNullOrEmpty
             }
             It "Returns the expected type" {
                 $result -is [object] | Should -Be $true
+                $result_node_filter -is [object] | Should -Be $true
             }
         }
     }

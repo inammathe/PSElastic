@@ -33,6 +33,7 @@ InModuleScope $ElasticModule {
 
             # Act
             $result = Write-ElasticDocument -Name 'mock' -JSON $json
+            $result_id = Write-ElasticDocument -Name 'mock' -id 'mock' -JSON $json
 
             # Assert
             It "Verifiable mocks are called" {
@@ -40,6 +41,7 @@ InModuleScope $ElasticModule {
             }
             It "Returns a value" {
                 $result | Should -not -BeNullOrEmpty
+                $result_id | Should -not -BeNullOrEmpty
             }
             It "Validates JSON correctly" {
                 { Write-ElasticDocument -Name 'mock' -JSON ($json += 'bad_json') } | Should -Throw
@@ -49,9 +51,7 @@ InModuleScope $ElasticModule {
             }
             It "Returns the expected type" {
                 $result -is [object] | Should -Be $true
-            }
-            It "Calls Get-ElasticConnection and is invoked twice" {
-                Assert-MockCalled -CommandName Get-ElasticConnection -Times 2 -Exactly
+                $result_id -is [object] | Should -Be $true
             }
         }
     }

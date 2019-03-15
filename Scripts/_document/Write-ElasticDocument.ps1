@@ -27,7 +27,7 @@ function Write-ElasticDocument
 
         [Parameter(Mandatory=$false)]
         [ValidateNotNullOrEmpty()]
-        [System.Nullable``1[[System.Int32]]]
+        [string]
         $Id,
 
         [Parameter(Mandatory=$false, ValueFromPipeline, ValueFromPipelineByPropertyName)]
