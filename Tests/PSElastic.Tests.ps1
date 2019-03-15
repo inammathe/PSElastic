@@ -16,6 +16,7 @@ $functionsTestLocations = @(
     "$functionTestRoot\_document",
     "$functionTestRoot\_indice",
     "$functionTestRoot\_search",
+    "$functionTestRoot\helpers",
     "$functionTestRoot\utils"
 )
 

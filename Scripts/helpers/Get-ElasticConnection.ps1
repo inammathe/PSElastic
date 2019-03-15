@@ -19,9 +19,17 @@ function Get-ElasticConnection
     param()
     Begin
     {
-        If([string]::IsNullOrEmpty($env:ElasticBaseUrl) -or [string]::IsNullOrEmpty($env:ElasticAuth))
+        If([string]::IsNullOrEmpty($env:ElasticBaseUrl) -and [string]::IsNullOrEmpty($env:ElasticAuth))
         {
-            throw "At least one of the following variables does not have a value set: `$env:ElasticBaseUrl or `$env:ElasticAuth.`n`nUse Set-ElasticConnectionInfo to set these values"
+            Throw "`$env:ElasticBaseUrl and `$env:ElasticAuth has not been set. Please use Set-ElasticConnectionInfo to set these values"
+        }
+        If([string]::IsNullOrEmpty($env:ElasticBaseUrl))
+        {
+            Throw "`$env:ElasticBaseUrl has not been set. Please use Set-ElasticConnectionInfo to set this value"
+        }
+        If([string]::IsNullOrEmpty($env:ElasticAuth))
+        {
+            Throw "`$env:ElasticAuth has not been set. Please use Set-ElasticConnectionInfo to set this value"
         }
     }
     Process

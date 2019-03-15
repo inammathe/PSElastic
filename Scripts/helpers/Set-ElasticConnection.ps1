@@ -15,16 +15,31 @@ function Set-ElasticConnection
     (
         # Elastic BaseUrl
         [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
         [string]$BaseUrl,
 
         # Elastic username
-        [Parameter(Mandatory,ParameterSetName="Credentials")]
+        [Parameter(Mandatory, ParameterSetName='RawCredentials')]
+        [ValidateNotNullOrEmpty()]
         [string]$Username,
 
         # Elastic password
-        [Parameter(Mandatory,ParameterSetName="Credentials")]
-        [string]$Password
+        [Parameter(Mandatory, ParameterSetName='RawCredentials')]
+        [string]$Password,
+
+        # Credential object
+        [Parameter(Mandatory, ParameterSetName='PSCredentials')]
+        [ValidateNotNullOrEmpty()]
+        [PSCredential]
+        $Credentials
     )
+    if ($Credentials) {
+        $Username = $Credentials.UserName
+        $Password = $Credentials.GetNetworkCredential().Password
+    }
+
     $env:ElasticBaseUrl = $BaseUrl
     $env:ElasticAuth = ('Basic ' + [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($Username + ":" + $Password)))
+
+    Write-Output (Get-ElasticConnection)
 }
