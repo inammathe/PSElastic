@@ -18,7 +18,7 @@ InModuleScope $ElasticModule {
 
             # Assert
             It "Returns a base url" {
-                $result.BaseUrl | Should -Be $mockUrl
+                $result.BaseUrl | Should -Be 'mockUrl'
             }
             It "Returns a connection header" {
                 $result.Header.Authorization | Should -Be 'mockAuth'
